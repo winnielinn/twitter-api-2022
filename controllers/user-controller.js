@@ -10,7 +10,7 @@ const userController = {
 
       if (await User.findOne({ where: { account: req.body.account } })) throw new Error('此帳號已經註冊。')
 
-      const user = await User.create({
+      await User.create({
         account: req.body.account,
         name: req.body.name,
         email: req.body.email,
@@ -33,9 +33,11 @@ const userController = {
   },
   getUser: async (req, res, next) => {
     try {
-      const user = await User.findOne({
-        where: { account: 'root'},
-        include: [{ model: User, as: 'Followers' }]
+      const user = await User.findByPk(req.params.id, {
+        include: [
+          { model: User, as: 'Followers' },
+          { model: User, as: 'Followings' }
+        ]
       })
       res.json({ status: 'success', user })
     } catch (err) {
