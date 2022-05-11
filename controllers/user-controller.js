@@ -26,7 +26,7 @@ const userController = {
       const user = getUser(req)
       delete user.password
       const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '30d' })
-      res.json({ status: 'success', token, user })
+      res.json({ status: 'success', message: '登入成功', data: { token, user } })
     } catch (err) {
       next(err)
     }
