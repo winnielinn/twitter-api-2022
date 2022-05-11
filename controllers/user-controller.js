@@ -65,6 +65,17 @@ const userController = {
     } catch (err) {
       next(err)
     }
+  },
+  getLikes: async (req, res, next) => {
+    try {
+      const likes = await Like.findAll({
+        where: { userId: getUser(req).id },
+        order: [['createdAt', 'DESC']]
+      })
+      res.json({ status: 'success', likes })
+    } catch (err) {
+      next(err)
+    }
   }
 }
 module.exports = userController
