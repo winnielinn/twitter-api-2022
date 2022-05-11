@@ -86,6 +86,16 @@ const userController = {
     } catch (err) {
       next(err)
     }
+  },
+  getFollowers: async (req, res, next) => {
+    try {
+      const followers = await User.findByPk(req.params.id, {
+        include: [{ model: User, as: 'Followers' }]
+      })
+      res.json({ status: 'success', data: { followers: followers.Followers } })
+    } catch (err) {
+      next(err)
+    }
   }
 }
 module.exports = userController
