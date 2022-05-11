@@ -39,7 +39,7 @@ const userController = {
           { model: User, as: 'Followings' }
         ]
       })
-      res.json({ status: 'success', user })
+      res.json({ status: 'success', data:{ user }})
     } catch (err) {
       next(err)
     }
@@ -50,7 +50,7 @@ const userController = {
         where: { userId: req.params.id },
         order: [['createdAt', 'DESC']]
       })
-      res.json({ status: 'success', userTweets })
+      res.json({ status: 'success', data:{ userTweets }})
     } catch (err) {
       next(err)
     }
@@ -58,10 +58,10 @@ const userController = {
   getRepliedTweets: async (req, res, next) => {
     try {
       const repliedTweets = await Reply.findAll({
-        where: { userId: getUser(req).id },
+        where: { userId: req.params.id },
         order: [['createdAt', 'DESC']]
       })
-      res.json({ status: 'success', repliedTweets })
+      res.json({ status: 'success', data:{ repliedTweets }})
     } catch (err) {
       next(err)
     }
@@ -69,10 +69,20 @@ const userController = {
   getLikes: async (req, res, next) => {
     try {
       const likes = await Like.findAll({
-        where: { userId: getUser(req).id },
+        where: { userId: req.params.id },
         order: [['createdAt', 'DESC']]
       })
-      res.json({ status: 'success', likes })
+      res.json({ status: 'success', data:{ likes }})
+    } catch (err) {
+      next(err)
+    }
+  },
+  getFollowings: async (req, res, next) => {
+    try {
+      const followings = await User.findByPk(req.params.id, {
+        include: [{ model: User, as: 'Followings' }]
+      })
+      res.json({ status: 'success', data:{ followings: followings.Followings }})
     } catch (err) {
       next(err)
     }
