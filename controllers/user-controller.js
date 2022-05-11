@@ -54,6 +54,17 @@ const userController = {
     } catch (err) {
       next(err)
     }
+  },
+  getRepliedTweets: async (req, res, next) => {
+    try {
+      const repliedTweets = await Reply.findAll({
+        where: { userId: getUser(req).id },
+        order: [['createdAt', 'DESC']]
+      })
+      res.json({ status: 'success', repliedTweets })
+    } catch (err) {
+      next(err)
+    }
   }
 }
 module.exports = userController
