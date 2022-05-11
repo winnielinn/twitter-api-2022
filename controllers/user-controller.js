@@ -43,6 +43,17 @@ const userController = {
     } catch (err) {
       next(err)
     }
+  },
+  getTweets: async (req, res, next) => {
+    try {
+      const userTweets = await Tweet.findAll({
+        where: { userId: req.params.id },
+        order: [['createdAt', 'DESC']]
+      })
+      res.json({ status: 'success', userTweets })
+    } catch (err) {
+      next(err)
+    }
   }
 }
 module.exports = userController
