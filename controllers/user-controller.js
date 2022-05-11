@@ -96,6 +96,17 @@ const userController = {
     } catch (err) {
       next(err)
     }
+  },
+  putUser: async (req, res, next) => {
+    try {
+      const { password, checkPassword } = req.body
+      if (password !== checkPassword) throw new Error('密碼與確認密碼不符。')
+      const user = await User.findByPk(getUser(req).id)
+      await user.update(req.body)
+      res.json({ status: 'success', message: '資料更改成功！', data: { user  }})
+    } catch (err) {
+      next(err)
+    }
   }
 }
 module.exports = userController
