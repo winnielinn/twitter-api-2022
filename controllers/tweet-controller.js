@@ -131,7 +131,8 @@ const tweetController = {
       next(err)
     }
   },
-  getTweetAllReplies: async (req, res, next) => {
+  // reply-feature
+  getReplies: async (req, res, next) => {
     try {
       const tweetId = req.params.id
       const tweet = await Tweet.findByPk(tweetId)
@@ -141,9 +142,7 @@ const tweetController = {
         where: {
           tweetId
         },
-        include: [
-          { model: User, attributes: ['name', 'account', 'avatar'] }
-        ],
+        include: [{ model: User, attributes: ['name', 'account', 'avatar'] }],
         plain: true,
         nest: true,
         raw: true,
